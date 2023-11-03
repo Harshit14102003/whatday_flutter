@@ -6,9 +6,11 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // This is the entry point of the Flutter app.
+    // It returns a MaterialApp widget, which is the root of the app.
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      debugShowCheckedModeBanner: false, // Hide the debug banner
+      home: MyHomePage(), // Set the initial page to MyHomePage
     );
   }
 }
@@ -27,100 +29,103 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Scaffold provides a basic app structure, including an app bar and body.
       appBar: AppBar(
-        title: Text('WhatDayApp'),
+        title: Text('WhatDayApp'), // AppBar with a title
       ),
       body: Center(
+        // Center widget centers its child vertically and horizontally.
         child: Column(
+          // Column widget arranges children in a vertical column.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
               'Enter Date:',
               style: TextStyle(
                 fontStyle: FontStyle.italic,
-                fontSize: 20, // You can adjust the fontSize as needed
+                fontSize: 20, // Text widget with style properties.
               ),
             ),
-            SizedBox(height: 20),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: 300,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.lightBlue, // You can specify the border color here
-                      width: 0.2,          // You can specify the border width here
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0), // Adjust the padding as needed
-                    child: Center(
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(labelText: 'Day'),
-                        onChanged: (value) {
-                          day = int.tryParse(value) ?? 1;
-                        },
-                      ),
-                    ),
+            SizedBox(height: 20), // Adds spacing (SizedBox) between widgets.
+
+            // Container widget for 'Day' input field.
+            Container(
+              width: 300,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.lightBlue, // Border color
+                  width: 0.2, // Border width
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'Day'), // Input field with label
+                    onChanged: (value) {
+                      day = int.tryParse(value) ?? 1; // Update 'day' when text changes.
+                    },
                   ),
                 ),
-
-                Container(
-                  width: 300,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.lightBlue, // You can specify the border color here
-                      width: 0.2,          // You can specify the border width here
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0), // Adjust the padding as needed
-                    child: Center(
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(labelText: 'Month'),
-                        onChanged: (value) {
-                          month = int.tryParse(value) ?? 1;
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-
-                Container(
-                  width: 300,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.lightBlue, // You can specify the border color here
-                      width: 0.2,          // You can specify the border width here
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0), // Adjust the padding as needed
-                    child: Center(
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(labelText: 'Year'),
-                        onChanged: (value) {
-                          year = int.tryParse(value) ?? 1;
-                        },
-                      ),
-                    ),
-                  ),
-                )
-              ],
+              ),
             ),
-            SizedBox(height: 20),
+
+            // Container widget for 'Month' input field.
+            Container(
+              width: 300,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.lightBlue, // Border color
+                  width: 0.2, // Border width
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'Month'), // Input field with label
+                    onChanged: (value) {
+                      month = int.tryParse(value) ?? 1; // Update 'month' when text changes.
+                    },
+                  ),
+                ),
+              ),
+            ),
+
+            // Container widget for 'Year' input field.
+            Container(
+              width: 300,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.lightBlue, // Border color
+                  width: 0.2, // Border width
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'Year'), // Input field with label
+                    onChanged: (value) {
+                      year = int.tryParse(value) ?? 1; // Update 'year' when text changes.
+                    },
+                  ),
+                ),
+              ),
+            ),
+
             ElevatedButton(
               onPressed: () {
-                findDayOfWeek();
+                findDayOfWeek(); // ElevatedButton triggers 'findDayOfWeek' when pressed.
               },
-              child: Text('Find Day of the Week'),
+              child: Text('Find Day of the Week'), // Button text
             ),
-            SizedBox(height: 20),
-            Text('Day of the Week: $dayOfWeek'),
+            SizedBox(height: 20), // Spacing
+
+            Text('Day of the Week: $dayOfWeek'), // Display the calculated day of the week.
           ],
         ),
       ),
@@ -129,6 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void findDayOfWeek() {
     if (isValidDate(day, month, year)) {
+      // Calculate the day of the week using Zeller's Congruence algorithm.
+
       int k = day;
       int m = (month - 3) % 12 + 1;
       int D = year % 100;
@@ -149,10 +156,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     setState(() {});
+    // Update the UI to display the calculated day of the week.
   }
 
   bool isValidDate(int day, int month, int year) {
-    if (year > 1000 && year<=9999 && month >= 1 && month <= 12) {
+    // Check if the provided date is valid.
+
+    if (year > 1000 && year <= 9999 && month >= 1 && month <= 12) {
       int lastDayOfMonth = DateTime(year, month + 1, 0).day;
       return day >= 1 && day <= lastDayOfMonth;
     }
